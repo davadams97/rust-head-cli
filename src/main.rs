@@ -1,18 +1,20 @@
 use clap::Parser;
 use std::fs::File;
-use std::io::{self, BufRead};
+use std::io::{self, BufRead, stdin};
 use std::path::Path;
 
 #[derive(Parser)]
 struct Cli {    
-    path: std::path::PathBuf,
+    path: Option<std::path::PathBuf>,
 }
 
 fn main() {
     let args = Cli::parse();
 
-    if !args.path.as_os_str().is_empty() {
-        print_lines(args.path)
+    if let Some(path) = args.path {
+        print_lines(path);
+    } else {
+        start_eval();
     }
 }
 
@@ -21,6 +23,17 @@ fn print_lines(path: std::path::PathBuf) {
         for line in lines.flatten().take(10) {
             println!("{}", line);
         }
+    }
+}
+
+fn start_eval() {
+    for _ in 0..10 {
+        
+        let mut input = String::new();
+        stdin().read_line(&mut input).unwrap();
+        let command = input.trim();
+
+        println!("{}", command);
     }
 }
 
