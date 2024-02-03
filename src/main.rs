@@ -11,7 +11,13 @@ struct Cli {
 fn main() {
     let args = Cli::parse();
 
-    if let Ok(lines) = read_lines(&args.path) {
+    if !args.path.as_os_str().is_empty() {
+        print_lines(args.path)
+    }
+}
+
+fn print_lines(path: std::path::PathBuf) {
+    if let Ok(lines) = read_lines(path) {
         for line in lines.flatten().take(10) {
             println!("{}", line);
         }
